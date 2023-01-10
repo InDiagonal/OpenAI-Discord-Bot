@@ -1,17 +1,16 @@
 // Import the required modules and classes
+const http = require('node:http');
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const { CommandsManager } = require('./utils/commands-manager.js');
-
 
 // Create a new Discord client with specified gateway intents
 const client = new Client({
 	intents: [
-		// These intents allow the client to access guild-related information
-		// such as messages and members
+		// These intents allow the client to access specified information
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.GuildMembers
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.MessageContent
 	],
 });
 
@@ -20,7 +19,7 @@ client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-// Initialize the Commands class and deploy the commands
+// Initialize and deploy client commands
 client.commands = new CommandsManager();
 client.commands.deploy();
 
@@ -93,3 +92,14 @@ async function commandResponse(interaction) {
 
 // Log the client in using the DISCORD_TOKEN environment variable
 client.login(process.env.DISCORD_TOKEN);
+
+// Creates server on port 8080
+http.createServer((req, res) => {
+	res.writeHead(200);
+	// Send a response based on bot status bool
+	if (client.presence.status === 'online') {
+		res.end('OpenAI bot is online!');
+	} else {
+		res.end('OpenAI bot is offline!');
+	}
+}).listen(8080);
