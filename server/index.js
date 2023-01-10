@@ -96,7 +96,7 @@ client.login(process.env.DISCORD_TOKEN);
 // Creates server on port 8080
 http.createServer((req, res) => {
 	res.writeHead(200);
-	// Send a response based on bot status bool
+	// Send a response based on bot presence status
 	if (client.presence.status === 'online') {
 		res.end('OpenAI bot is online!');
 	} else {
