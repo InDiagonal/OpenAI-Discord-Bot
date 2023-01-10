@@ -11,7 +11,7 @@ class CommandsManager extends Collection {
 		// Call the parent Collection class constructor
 		super();
 		// Set the path to the directory containing the command files
-		const commandsPath = path.join(process.cwd(), 'server/commands');
+		const commandsPath = path.join(process.cwd(), 'src/commands');
 		// Read the contents of the commands directory and filter the list to include only .js files
         const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 

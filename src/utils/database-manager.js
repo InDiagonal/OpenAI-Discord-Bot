@@ -7,22 +7,22 @@ const sqlite3 = require('sqlite3').verbose();
 class DatabaseManager {
     // Constructor for the ChatsDatabase class
     constructor() {
-        // Path of db queries
-        const basePath = path.join(process.cwd(), 'server/db');
+        // Set db paths
+        const queriesPath = path.join(process.cwd(), 'server/db/queries');
+        const databasePath = path.join(process.cwd(), 'server/db/user_chats.db');
         // Queries dictionary
         this.queries = {};
-        // Store SQLite queries in queries dict
-        // file name as key and file content as value
-        fs.readdirSync(basePath)
+        // Store SQLite queries in queries dict, file name as key and file content as value
+        fs.readdirSync(queriesPath)
             .filter(fileName => fileName.endsWith('.sql'))
             .map(fileName => {
                 // remove file extension
-                this.queries[fileName.split('.')[0]] = fs.readFileSync(path.join(basePath, fileName), 'utf8')
+                this.queries[fileName.split('.')[0]] = fs.readFileSync(path.join(queriesPath, fileName), 'utf8')
                     // replace carriage return characters
                     .replace(/\r/g, ' ');
             });
         // Database connection
-        this.db = new sqlite3.Database(path.join(basePath, 'user_chats.db'));
+        this.db = new sqlite3.Database(databasePath);
     }
 
     // Database connection and schema initialization
@@ -104,7 +104,7 @@ class DatabaseManager {
                 if (err) {
                     reject(err);
                 }
-                resolve(/*`Chat open for user: ${user_id}`*/);
+                resolve(/*`Chat open/closed for user: ${user_id}`*/);
             });
         });
     }

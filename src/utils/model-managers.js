@@ -1,9 +1,9 @@
 // Import two classes from the openai module, Configuration and OpenAIApi
 const { Configuration, OpenAIApi } = require('openai');
 // Import three custom error classes from the CustomErrors.js file
-const { maxMessageLength, TextExceedsMaxLength } = require('../errors/custom-errors.js');
+const { maxMessageLength, TextExceedsMaxLength } = require('./custom-errors.js');
 // Import the maxMessageLength and aiModels constants from the ai-config.js file
-const { aiModels } = require('./ai-models.js');
+const { aiModels } = require('../config/ai-models.js');
 
 
 const openai_config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });

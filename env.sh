@@ -1,5 +1,13 @@
 #!/bin/bash
-export DISCORD_TOKEN=
-export CLIENT_ID=
-export GUILD_ID=
-export OPENAI_API_KEY=
+
+# Discord variables
+export DISCORD_TOKEN="INSERT"
+export CLIENT_ID="INSERT"
+export GUILD_ID="INSERT"
+
+# OpenAI variables
+export OPENAI_API_KEY="INSERT"
+
+# Server variables
+export PORT="INSERT"
+export ADMIN_KEY="INSERT"

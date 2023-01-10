@@ -1,105 +1,59 @@
 // Import the required modules and classes
-const http = require('node:http');
-const { Client, Events, GatewayIntentBits } = require('discord.js');
-const { CommandsManager } = require('./utils/commands-manager.js');
+const fs = require('node:fs');
+const path = require('node:path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const { DiscordBot } = require('../src/discord-bot.js');
 
-// Create a new Discord client with specified gateway intents
-const client = new Client({
-	intents: [
-		// These intents allow the client to access specified information
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.MessageContent
-	],
+
+// Create an Express application
+const app = express();
+const pagesPath = path.join(process.cwd(), 'server/public');
+
+// Create an instance of DiscordBot class
+new DiscordBot();
+
+// The following lines register middlewares with the Express application:
+app.use(express.static(pagesPath)); // Serve static files from the 'pages' directory
+app.use(bodyParser.json()); // Parse incoming request bodies in a middleware before the handlers
+app.use(bodyParser.urlencoded({extended: true}));
+
+// Serve the 'index.html' file as the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(pagesPath, 'index.html'));
 });
 
-// When the client is ready, log a message to the console
-client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
+// Define a route for the '/database' path that handle GET and POST request
+app.route('/database')
+	// Serve the 'database.html' file when a GET request is made to the '/database' route
+    .get((req, res) => {
+        res.sendFile(path.join(pagesPath, 'database.html'));
+    })
+	// Handle the file download when a POST request is made to the '/database' route
+    .post((req, res) => {
+	    if (req.body.key === process.env.ADMIN_KEY) {
+		    const fileName = 'user_chats.db';
+		    const filePath = path.join(process.cwd(), `server/db/${fileName}`);
+		
+		    try {
+				// Read file located at filePath
+			    const file = fs.readFileSync(filePath);
+				// Set content type of response to text/plain
+			    res.set('Content-Type', 'text/plain');
+				// Set content disposition to attachment, so the content is downloaded
+			    res.set('Content-Disposition', `attachment; filename="${fileName}"`);
+				// Send file in the response to the client
+			    res.send(file);
+
+		    } catch (err) {
+			    res.status(500).send(err);
+		    }
+	    } else {
+		    res.status(401).send("Invalid password, access denied");
+	    }
+    });
+
+// Start the Express application
+app.listen(process.env.PORT, () => {
+    console.log(`Server is listening on port ${process.env.PORT}`);
 });
-
-// Initialize and deploy client commands
-client.commands = new CommandsManager();
-client.commands.deploy();
-
-// Event listener for when a message is created in a guild
-client.on(Events.MessageCreate, async interaction => {
-	// If the message was sent by a bot, return early
-	if (interaction.author.bot) return;
-	console.log('---');
-	// Process the message as a chat command
-	messageResponse(interaction);
-});
-
-// Event listener for when a chat command is sent in a guild
-client.on(Events.InteractionCreate, async interaction => {
-	// If the interaction is not a chat command, return early
-	if (!interaction.isChatInputCommand()) return;
-	console.log('///');
-	// Process the chat command
-	commandResponse(interaction);
-});
-
-// Function to handle chat commands
-async function messageResponse(interaction) {
-	// Set the command name to 'chat'
-	const commandName = 'chat';
-	// Get the command object from the Commands class
-	const command = client.commands.get(commandName);
-	
-	if (!command) {
-		console.error(`No command matching ${commandName} was found.`);
-		return;
-	}
-	// // Get the channel object for the interaction
-	// const channel = client.channels.cache.get(interaction.channelId);
-	try {
-		// Execute the command's reply function
-		await command.reply(interaction);
-	} catch (err) {
-		console.error(err.message);
-	}
-}
-
-// Function to handle chat commands
-async function commandResponse(interaction) {
-	// Get the command name from the interaction
-	const commandName = interaction.commandName;
-	// Get the command object from the Commands class
-	const command = client.commands.get(commandName);
-
-	if (!command) {
-		console.error(`No command matching ${commandName} was found.`);
-		return;
-	}
-	// // Get the channel object for the interaction
-	// const channel = client.channels.cache.get(interaction.channelId);
-	try {
-		// Execute the command's execute function
-		await command.execute(interaction);
-
-	} catch (err) {
-		console.error(err.message);
-		// If an error occurs, send an error message to the user
-		try {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-		} catch (error) {
-			console.error(error.message);
-		}
-	}
-}
-
-// Log the client in using the DISCORD_TOKEN environment variable
-client.login(process.env.DISCORD_TOKEN);
-
-// Creates server on port 8080
-http.createServer((req, res) => {
-	res.writeHead(200);
-	// Send a response based on bot presence status
-	if (client.presence.status === 'online') {
-		res.end('OpenAI bot is online!');
-	} else {
-		res.end('OpenAI bot is offline!');
-	}
-}).listen(8080);

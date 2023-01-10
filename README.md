@@ -49,10 +49,12 @@ To install and run OpenAI Bot on your own Discord server, follow these steps:
 1. Download the source code for the bot by cloning the repository or downloading a zip file.
 2. Install the dependencies by running `npm install` in the root directory of the project.
 3. In the `env.sh` file located in the root directory of the project insert the following values:
-    - **OpenAI API key** as the value for the `OPENAI_API_KEY` variable. (You can sign up for an OpenAI API key at [https://beta.openai.com/signup/](https://beta.openai.com/signup/))
-    - **Discord API token** as the value for the `DISCORD_TOKEN` variable. (You can sign up for a Discord API Token at [https://discord.com/developers/applications/](https://discord.com/developers/applications/))
+    - **Discord API token** as the value for the `DISCORD_TOKEN` variable. (You can sign up for a Discord API Token at [https://discord.com/developers/applications/](https://discord.com/developers/applications/)
     - **Discord Bot client ID** as the value for the `CLIENT_ID` variable.
     - **Discord Development server ID** as the value for the `GUILD_ID` variable.
+    - **OpenAI API key** as the value for the `OPENAI_API_KEY` variable. (You can sign up for an OpenAI API key at [https://beta.openai.com/signup/](https://beta.openai.com/signup/)
+    - **Admin Database Access key** as the value for the `ADMIN_KEY` variable.
+    - **Server Port** as the value for the `PORT` variable.
 4. Set environmental variables by running `source env.sh` in the root directory of the project.
 4. Start the bot by running `npm start` or `node .` in the root directory of the project.
 
@@ -62,7 +64,8 @@ OpenAI Bot has the following dependencies:
 
 - **[discord.js](https://www.npmjs.com/package/discord.js)**: A JavaScript library for interacting with the Discord API.
 - **[openai](https://www.npmjs.com/package/openai)**: A JavaScript library for interacting with the OpenAI API.
-- **[sqlite3](https://www.npmjs.com/package/sqlite3)**: A library that provides a self-contained, serverless, zero-configuration, transactional SQL database engine.
+- **[sqlite3](https://www.npmjs.com/package/sqlite3)**: A JavaScript library that provides a self-contained, serverless, zero-configuration, transactional SQL database engine.
+- **[express](https://www.npmjs.com/package/express)**: A minimal and flexible Node.js web framework that provides a robust set of features for web and mobile applications.
 
 ## 📖 License
 

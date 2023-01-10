@@ -1,4 +1,4 @@
-// Import the required classes
+// import the required classes
 const { SlashCommandBuilder } = require('discord.js');
 const { ChatManager } = require('../utils/model-managers.js');
 const { DatabaseManager } = require('../utils/database-manager.js');
@@ -15,7 +15,7 @@ module.exports = {
     // data object for the command
     data: new SlashCommandBuilder()
 	    .setName('chat') // name of the command
-	    .setDescription('Manage chat with GPT') // description of the command
+	    .setDescription('Manage chat with OpenAI GPT') // description of the command
 	    .addSubcommand(subcommand => // subcommand for opening a chat session
 		    subcommand
 			    .setName('open') // name of the subcommand
@@ -24,7 +24,7 @@ module.exports = {
 	    .addSubcommand(subcommand => // subcommand for closing a chat session
 		    subcommand
 			    .setName('close') // name of the subcommand
-			    .setDescription('Close chat session') // description of the subcommand
+			    .setDescription('Close chat session (conversation will be saved)') // description of the subcommand
 	    )
 	    .addSubcommand(subcommand => // subcommand for deleting a chat session
 		    // set the name and description of the subcommand
