@@ -54,7 +54,6 @@ To install and run OpenAI Bot on your own Discord server, follow these steps:
     - **Discord Development server ID** as the value for the `GUILD_ID` variable.
     - **OpenAI API key** as the value for the `OPENAI_API_KEY` variable. (You can sign up for an OpenAI API key at [https://beta.openai.com/signup/](https://beta.openai.com/signup/)
     - **Admin Database Access key** as the value for the `ADMIN_KEY` variable.
-    - **Server Port** as the value for the `PORT` variable.
 4. Set environmental variables by running `source env.sh` in the root directory of the project.
 4. Start the bot by running `npm start` or `node .` in the root directory of the project.
 

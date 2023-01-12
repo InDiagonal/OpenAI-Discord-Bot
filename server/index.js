@@ -8,6 +8,7 @@ const { DiscordBot } = require('../src/discord-bot.js');
 
 // Create an Express application
 const app = express();
+const port = 8080;
 const pagesPath = path.join(process.cwd(), 'server/public');
 
 // Create an instance of DiscordBot class
@@ -54,6 +55,6 @@ app.route('/database')
     });
 
 // Start the Express application
-app.listen(process.env.PORT, () => {
-    console.log(`Server is listening on port ${process.env.PORT}`);
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
 });

@@ -9,5 +9,4 @@ export GUILD_ID="INSERT"
 export OPENAI_API_KEY="INSERT"
 
 # Server variables
-export PORT="INSERT"
 export ADMIN_KEY="INSERT"
