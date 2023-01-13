@@ -6,12 +6,12 @@ const bodyParser = require('body-parser');
 const { DiscordBot } = require('../src/discord-bot.js');
 
 
+// Create an instance of DiscordBot class
+new DiscordBot();
+
 // Create an Express application
 const app = express();
 const pagesPath = path.join(process.cwd(), 'server/public');
-
-// Create an instance of DiscordBot class
-new DiscordBot();
 
 // The following lines register middlewares with the Express application:
 app.use(express.static(pagesPath)); // Serve static files from the 'pages' directory
