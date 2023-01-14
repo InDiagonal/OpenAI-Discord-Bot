@@ -17,20 +17,21 @@ class DiscordBot {
             ],
         });
 
-        // When the client is ready, log a message to the console
-        this.client.once(Events.ClientReady, c => {
-        	console.log(`Ready! Logged in as ${c.user.tag}`);
+        // Event listener for when the client is ready
+        this.client.once(Events.ClientReady, client => {
+        	console.log('EVENT: ClientReady');
+            console.log(`Logged in as ${client.user.tag}`);
         });
 
-        // Initialize and deploy client commands
+        // Initialize and deploy client commands to the server
         this.client.commands = new CommandsManager();
-        this.client.commands.deploy();
+        this.client.commands.deploy(process.env.CLIENT_ID, process.env.GUILD_ID);
 
         // Event listener for when a message is created in a guild
         this.client.on(Events.MessageCreate, async interaction => {
             // If the message was sent by a bot, return early
             if (interaction.author.bot) return;
-            console.log('---');
+            console.log('EVENT: MessageCreate');
             // Process the message
             this.messageResponse(interaction);
         });
@@ -39,7 +40,7 @@ class DiscordBot {
         this.client.on(Events.InteractionCreate, async interaction => {
             // If the interaction is not a chat command, return early
             if (!interaction.isChatInputCommand()) return;
-            console.log('///');
+            console.log('EVENT: InteractionCreate');
             // Process the chat command
             this.commandResponse(interaction);
         });
@@ -54,12 +55,14 @@ class DiscordBot {
         // Get the command object from the Commands class
         const command = this.client.commands.get(commandName);
         
+        // Return if command not found
         if (!command) {
             console.error(`No command matching ${commandName} was found.`);
             return;
         }
 
         try {
+            // Response process
             await command.reply(interaction);
         } catch (err) {
             console.error(err.message);
@@ -73,17 +76,19 @@ class DiscordBot {
         // Get the command object from the Commands class
         const command = this.client.commands.get(commandName);
 
+        // Return if command not found
         if (!command) {
             console.error(`No command matching ${commandName} was found.`);
             return;
         }
         
         try {
+            // Response process
             await command.execute(interaction);
 
         } catch (err) {
             console.error(err.message);
-            // If an error occurs, send an error message to the user
+            
             try {
                 await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
             } catch (error) {

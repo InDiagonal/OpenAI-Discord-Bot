@@ -34,8 +34,9 @@ class CommandsManager extends Collection {
         }
 	}
 
-	// Method for deploying the commands to a Discord server
-	async deploy() {
+	// Deploy the commands of the bot (clientId) to a Discord server (guildId)
+	// or globally if guildId parameter not provided
+	async deploy(clientId, guildId=null) {
 		// Construct and prepare an instance of the REST class
 		const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 		// Create an array to hold the data for each command
@@ -47,14 +48,16 @@ class CommandsManager extends Collection {
 			commands_data.push(command.data.toJSON());
 		}
 
+		// Set the route for the request to the application guild commands endpoint
+		const reqRoutes = (guildId === null) ? Routes.applicationCommands(clientId) : Routes.applicationGuildCommands(clientId, guildId);
+
 		// Deploy the commands to the Discord guild (server)
 		try {
 			// Log a message indicating that the refresh process has started
 			console.log(`Started refreshing ${commands_data.length} application (/) commands.`);
 			// Use the REST module's put method to fully refresh all commands in the guild with the current set
 			const data = await rest.put(
-				// Set the route for the request to the application guild commands endpoint
-				Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+				reqRoutes,
 				// Set the body of the request to the array of command data
 				{ body: commands_data },
 			);

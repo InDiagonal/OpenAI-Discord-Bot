@@ -24,7 +24,7 @@ In addition to text generation, OpenAI Bot also allows users to access the DALL-
 
 ## 🕹 Usage (for users)
 
-OpenAi Bot is still **under development** but Beta version can be tested in the __[Development Server](https://discord.gg/ndCY5x8Dpq)__.
+Invite the bot to your Discord server (__[Invite Bot](https://discord.com/api/oauth2/authorize?client_id=1050363699187167292&permissions=2147503104&scope=bot)__) or try it in the development server (__[Development Server](https://discord.gg/ndCY5x8Dpq)__).
 
 Below you will find a list of available commands.
 
