@@ -1,4 +1,3 @@
-// Import required modules and classes
 const fs = require('node:fs');
 const path = require('node:path');
 const sqlite3 = require('sqlite3').verbose();
@@ -8,8 +7,8 @@ class DatabaseManager {
     // Constructor for the ChatsDatabase class
     constructor() {
         // Set db paths
-        const queriesPath = path.join(process.cwd(), 'server/db/queries');
-        const databasePath = path.join(process.cwd(), 'server/db/user_chats.db');
+        const queriesPath = path.join(process.cwd(), 'src/db/queries');
+        const databasePath = path.join(process.cwd(), 'src/db/user_chats.db');
         // Queries dictionary
         this.queries = {};
         // Store SQLite queries in queries dict, file name as key and file content as value
@@ -122,5 +121,5 @@ class DatabaseManager {
     }
 }
 
-// Export class
+
 module.exports = { DatabaseManager };

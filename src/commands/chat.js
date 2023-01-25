@@ -1,13 +1,11 @@
-// import the required classes
 const { SlashCommandBuilder } = require('discord.js');
-const { ChatManager } = require('../utils/model-managers.js');
+const { ChatManager } = require('../utils/models-managers.js');
 const { DatabaseManager } = require('../utils/database-manager.js');
 
 // create instance of ChatAI class and DatabaseManager class
 const chat = new ChatManager();
-let db;
-(async () => {
-    db = await new DatabaseManager().init();
+const db = (async () => {
+    return await new DatabaseManager().init();
 })();
 
 // export an object with the data and execute properties

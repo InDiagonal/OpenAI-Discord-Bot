@@ -1,13 +1,12 @@
-// Import two classes from the openai module, Configuration and OpenAIApi
+require('dotenv').config();
 const { Configuration, OpenAIApi } = require('openai');
-// Import three custom error classes from the CustomErrors.js file
 const { maxMessageLength, TextExceedsMaxLength } = require('./custom-errors.js');
-// Import the maxMessageLength and aiModels constants from the ai-config.js file
 const { aiModels } = require('../config/ai-models.js');
 
 
-const openai_config = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-
+// Openai configuration with apiKey
+const apiKey = process.env.OPENAI_API_KEY;
+const openai_config = new Configuration({ apiKey: apiKey });
 
 // The AskAI class extends the OpenAIApi class and is used to generate answers to user prompts
 class AskManager extends OpenAIApi {
@@ -47,8 +46,9 @@ class AskManager extends OpenAIApi {
 
         } catch (err) {
             // Console error and return
-            console.error(err.message);
-            return;
+            const error = 'Error generating answer';
+            console.error(error);
+            return error;
         }
     }
 }
@@ -94,8 +94,9 @@ class ChatManager extends OpenAIApi {
 
         } catch (err) {
             // Console error and return
-            console.error(err.message);
-            return;
+            const error = 'Error generating reply';
+            console.error(error);
+            return error;
         }
     }
 }
@@ -135,11 +136,12 @@ class ImageManager extends OpenAIApi {
             
         } catch (err) {
             // Console error and return
-            console.error(err.message);
+            const error = 'Error generating answer';
+            console.error(error);
             return;
         }
     }
 }
 
-// Export the following classes
+
 module.exports = { AskManager, ChatManager, ImageManager };

@@ -1,6 +1,5 @@
-// import SlashCommandBuilder, EmbedBuilder, and ImageAI classes
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { ImageManager } = require('../utils/model-managers.js');
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const { ImageManager } = require('../utils/models-managers.js');
 
 // create an instance of the ImageAI class
 const image = new ImageManager();
@@ -20,12 +19,15 @@ module.exports = {
     async execute(interaction) {
         // defer the reply so that it can be edited later
         await interaction.deferReply();
+        const error = new AttachmentBuilder('./src/assets/error.png');
+        const icon = new AttachmentBuilder('./src/assets/openai-logo.png');
         // get the 'prompt' option from the interaction object
         const input = interaction.options.getString('prompt');
         // generate an image from the prompt
-        const output = await image.generate_image(input);
+        let output = await image.generate_image(input);
+        if (!output) output = 'attachment://error.png';
         // edit the reply with the embed of the generated image
-        await interaction.editReply({ embeds: [this.embedImage(input, output)] });
+        await interaction.editReply({ embeds: [this.embedImage(input, output)], files: [icon, error] });
         console.log('Image sent!');
     },
 
@@ -36,7 +38,7 @@ module.exports = {
         .setTitle(title.toUpperCase()) // title of the embed
         .setAuthor({ // author of the embed
           name: 'OpenAI',
-          iconURL: 'https://openai.com/content/images/2022/05/openai-avatar.png',
+          iconURL: 'attachment://openai-logo.png',
           url: 'https://openai.com'
         }) 
         .setImage(url) // image of the embed

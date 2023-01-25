@@ -1,6 +1,5 @@
-// import SlashCommandBuilder and AskAI
 const { SlashCommandBuilder } = require('discord.js');
-const { AskManager } = require('../utils/model-managers.js');
+const { AskManager } = require('../utils/models-managers.js');
 
 // create an instance of the AskAI class
 const ask = new AskManager();
