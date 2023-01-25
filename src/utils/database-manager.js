@@ -2,14 +2,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const sqlite3 = require('sqlite3').verbose();
 
-// Class for interacting with a SQLite database to store chat information
+// Class for interacting with a SQLite database to store chats (NOT ENCRYPTED!)
 class DatabaseManager {
-    // Constructor for the ChatsDatabase class
     constructor() {
-        // Set db paths
         const queriesPath = path.join(process.cwd(), 'src/db/queries');
         const databasePath = path.join(process.cwd(), 'src/db/user_chats.db');
-        // Queries dictionary
+        // Queries object
         this.queries = {};
         // Store SQLite queries in queries dict, file name as key and file content as value
         fs.readdirSync(queriesPath)
@@ -24,7 +22,7 @@ class DatabaseManager {
         this.db = new sqlite3.Database(databasePath);
     }
 
-    // Database connection and schema initialization
+    // Database schema creation
     async init() {
         return new Promise((resolve, reject) => {
             this.db.run(this.queries.schema, (err) => {

@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const { CommandsManager } = require('./utils/commands-manager.js');
 
-
+// Intructions here: https://discordjs.guide/creating-your-bot/
 // Env variables
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;

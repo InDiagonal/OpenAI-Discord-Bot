@@ -1,18 +1,17 @@
 require('dotenv').config();
 const { Configuration, OpenAIApi } = require('openai');
-const { maxMessageLength, TextExceedsMaxLength } = require('./custom-errors.js');
 const { aiModels } = require('../config/ai-models.js');
 
 
 // Openai configuration with apiKey
 const apiKey = process.env.OPENAI_API_KEY;
 const openai_config = new Configuration({ apiKey: apiKey });
+// Discord max message length
+const maxMessageLength = 2000;
 
 // The AskAI class extends the OpenAIApi class and is used to generate answers to user prompts
 class AskManager extends OpenAIApi {
     constructor() {
-        // Call the super constructor of the OpenAIApi class
-        // and pass it a new Configuration object with the API key
         super(openai_config);
         // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'ask';
@@ -35,17 +34,13 @@ class AskManager extends OpenAIApi {
             console.log('Status:', response.status, response.statusText);
             // Extract the response text and trim leading and trailing whitespace
             const answer = response.data.choices[0].text.trim();
-
-            // If the answer is empty or too long, throw an error
-            if (answer.length > maxMessageLength) {
-                throw new TextExceedsMaxLength("Generated answer exceeds max discord message length");
+            if (!answer || answer.length > maxMessageLength) {
+                throw new Error;
             }
                 
-            // Return the answer
             return answer;
 
         } catch (err) {
-            // Console error and return
             const error = 'Error generating answer';
             console.error(error);
             return error;
@@ -57,12 +52,8 @@ class AskManager extends OpenAIApi {
 // The ChatAI class extends the OpenAIApi class and is used to hold a conversation with a user
 class ChatManager extends OpenAIApi {
     constructor() {
-        // Call the super constructor of the OpenAIApi class
-        // and pass it a new Configuration object with the API key
         super(openai_config);
-
-        // Set the name and body properties of the ChatAI object,
-        // as well as the convo and defaultPrompt properties
+        // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'chat';
         this.body = aiModels[this.name].body;
         this.defaultPrompt = this.body.prompt;
@@ -74,8 +65,9 @@ class ChatManager extends OpenAIApi {
         console.log(`Generating reply...`);
         // Concatenate the first stop, the prompt, and the second stop to format the message
         const message = `${this.body.stop[0]} ${prompt}\n${this.body.stop[1]} `;
+        console.log(message);
         // Concatenate the conversation and message to create the body's prompt
-        this.body.prompt = chat+message;
+        this.body.prompt = chat + message;
 
         try {
             // Use the superclass's createCompletion method to generate a response
@@ -83,17 +75,13 @@ class ChatManager extends OpenAIApi {
             console.log('Status:', response.status, response.statusText);
             // Extract the response text and trim leading and trailing whitespace
             const reply = response.data.choices[0].text.trim();
-
-            // If the reply is too long or empty, throw an error
-            if (reply.length > maxMessageLength) {
-                throw new TextExceedsMaxLength("Generated reply exceeds max discord message length");
+            if (!reply || reply.length > maxMessageLength) {
+                throw new Error;
             }
 
-            // Return the reply
             return { 'message': message, 'reply': reply };
 
         } catch (err) {
-            // Console error and return
             const error = 'Error generating reply';
             console.error(error);
             return error;
@@ -103,8 +91,6 @@ class ChatManager extends OpenAIApi {
 
 // The ImageAI class extends the OpenAIApi class and is used to generate an image using DALL-E Model
 class ImageManager extends OpenAIApi {
-    // Call the super constructor of the OpenAIApi class
-    // and pass it a new Configuration object with the API key
     constructor() {
         super(openai_config);
         // Set the name, body and defaultPrompt properties based on the specified AI model
@@ -125,20 +111,16 @@ class ImageManager extends OpenAIApi {
             console.log('Status:', response.status, response.statusText);
             // Extract the image URL frome response data
             const url = response.data.data[0].url;
-
-            // If the URL is too long, throw an error
-            if (url.length > maxMessageLength) {
-                throw new TextExceedsMaxLength("Generated url exceeds max discord message length");
+            if (!url) {
+                throw new Error;
             }
 
-            // Return the URL
             return url;
-            
+
         } catch (err) {
-            // Console error and return
-            const error = 'Error generating answer';
+            const error = 'Error generating image';
             console.error(error);
-            return;
+            return 'attachment://error.png';
         }
     }
 }
