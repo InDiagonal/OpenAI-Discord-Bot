@@ -120,7 +120,7 @@ class ImageManager extends OpenAIApi {
         } catch (err) {
             const error = 'Error generating image';
             console.error(error);
-            return 'attachment://error.png';
+            return;
         }
     }
 }

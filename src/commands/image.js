@@ -17,15 +17,14 @@ module.exports = {
     async execute(interaction) {
         // defer reply until the command finishes executing
         await interaction.deferReply();
-        // create error image and logo icon attachments
-        const error = new AttachmentBuilder('./src/assets/error.png');
+        // create logo icon attachments
         const icon = new AttachmentBuilder('./src/assets/openai-logo.png');
         // get the prompt option from the interaction object
         const input = interaction.options.getString('prompt');
         // generate an image from the prompt
-        let output = await image.generate_image(input);
+        const output = await image.generate_image(input);
         // send reply with the embed of the generated image
-        await interaction.editReply({ embeds: [this.embedImage(input, output)], files: [icon, error] });
+        await interaction.editReply({ embeds: [this.embedImage(input, output)], files: [icon] });
         console.log('Image sent!');
     },
 
