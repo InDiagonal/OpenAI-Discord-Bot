@@ -18,7 +18,7 @@ module.exports = {
         // defer reply until the command finishes executing
         await interaction.deferReply();
         // create logo icon attachments
-        const icon = new AttachmentBuilder('./src/assets/openai-logo.png');
+        const icon = new AttachmentBuilder('./src/assets/openai-logo-small.png');
         // get the prompt option from the interaction object
         const input = interaction.options.getString('prompt');
         // generate an image from the prompt
@@ -34,7 +34,7 @@ module.exports = {
         .setTitle(title.toUpperCase())
         .setAuthor({
           name: 'OpenAI',
-          iconURL: 'attachment://openai-logo.png',
+          iconURL: 'attachment://openai-logo-small.png',
           url: 'https://openai.com'
         }) 
         .setImage(url)
