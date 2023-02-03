@@ -4,7 +4,7 @@
 
 <a href="#-features">Features</a>
 •
-<a href="#-installation-for-developers">Installation</a>
+<a href="#-installation">Installation</a>
 •
 <a href="#-support">Support</a>
 •
