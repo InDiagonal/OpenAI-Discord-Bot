@@ -1,3 +1,3 @@
 UPDATE chats
-SET chat = chat || ?
+SET chat = ?
 WHERE user_id = ?

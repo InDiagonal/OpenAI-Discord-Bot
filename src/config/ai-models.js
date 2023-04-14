@@ -1,11 +1,11 @@
 // AI custom models object and their respective configurations
-// Check OpenAI models here: https://beta.openai.com/docs/api-reference/models
+// Check OpenAI models here: https://platform.openai.com/docs/api-reference/chat/create
 
 const aiModels = {
     ask: {
         body: {
             model: 'text-davinci-003',
-            prompt: 'The following is a question from a USER. Your name is GPT and your goal is to answer USER question cleverly and providing as many details as possible.\n\n',
+            prompt: 'The following is a question from a USER. As GPT, your goal is to provide a clever answer.\n\n',
             max_tokens: 2000, 
             temperature: 0.5,
             n: 1,
@@ -15,14 +15,16 @@ const aiModels = {
     },
     chat: {
         body: {
-            model: 'text-davinci-003',
-            prompt: 'The following is a conversation between two friends: GPT and USER. GPT is creative, clever, smart, very funny and sometimes sarcastic. GPT talks using American slang and uses emojis occasionally. The conversation between GPT and USER should start with GPT initiating the topic of discussion. GPT should also ask USER his name. \n\nUSER: Hey, what is up GPT?\nGPT: Hey! Nothing much, just chilling\n',
+            model: "gpt-3.5-turbo",
+            messages: [{
+                role: "system",
+                content: "The following is a friendly conversation. You are creative, clever, smart, funny and sometimes sarcastic. You talk in American slang and use emojis occasionally. You should introduce to the user. Do not be afraid to initiate a discussion with a topic of your choice.",
+            }],
             max_tokens: 150,
             temperature: 0.9,
             n: 1,
             stream: false,
-            presence_penalty: 0.6,
-            stop: ['USER:', 'GPT:']
+            presence_penalty: 0.6
         }
     },
     image: {

@@ -56,7 +56,7 @@ class ChatManager extends OpenAIApi {
         // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'chat';
         this.body = aiModels[this.name].body;
-        this.defaultPrompt = this.body.prompt;
+        this.defaultPrompt = JSON.stringify(this.body.messages);
     }
 
     // This method generates an answer to a user message (prompt)
@@ -64,27 +64,28 @@ class ChatManager extends OpenAIApi {
         console.log(`User prompt: ${prompt}`);
         console.log(`Generating reply...`);
         // Concatenate the first stop, the prompt, and the second stop to format the message
-        const message = `${this.body.stop[0]} ${prompt}\n${this.body.stop[1]} `;
-        console.log(message);
+        const messages = JSON.parse(chat);
+        const message = { role: "user", content: prompt };
         // Concatenate the conversation and message to create the body's prompt
-        this.body.prompt = chat + message;
+        messages.push(message);
+        this.body.messages = messages;
 
         try {
             // Use the superclass's createCompletion method to generate a response
-            const response = await super.createCompletion(this.body);
+            const response = await super.createChatCompletion(this.body);
             console.log('Status:', response.status, response.statusText);
+
             // Extract the response text and trim leading and trailing whitespace
-            const reply = response.data.choices[0].text.trim();
-            if (!reply || reply.length > maxMessageLength) {
+            const reply = response.data.choices[0].message;
+            if (!reply.content || reply.content.length > maxMessageLength) {
                 throw new Error;
             }
 
-            return { 'message': message, 'reply': reply };
+            messages.push(reply);
+            return [messages, reply];
 
         } catch (err) {
-            const error = 'Error generating reply';
-            console.error(error);
-            return error;
+            return null;
         }
     }
 }
