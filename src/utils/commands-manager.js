@@ -5,6 +5,7 @@ const path = require('node:path');
 
 
 const discordToken = process.env.DISCORD_TOKEN;
+const rest = new REST().setToken(discordToken);
 
 // Instructions here: https://discordjs.guide/creating-your-bot/command-deployment.html#guild-commands
 
@@ -29,7 +30,6 @@ class CommandsManager extends Collection {
 
 	// Deploy bot commands (clientId) to a Discord guild (guildId)
 	async deploy(clientId, guildId) {
-		const rest = new REST({ version: '10' }).setToken(discordToken);
 		const commands_data = [];
 
 		for (const command of super.values()) {
@@ -38,10 +38,28 @@ class CommandsManager extends Collection {
 		try {
 			console.log(`Started refreshing ${commands_data.length} application (/) commands.`);
 			const data = await rest.put(
-				Routes.applicationGuildCommands(clientId, guildId),
+				guildId !== undefined
+					? Routes.applicationGuildCommands(clientId, guildId)
+					: Routes.applicationCommands(clientId),
 				{ body: commands_data },
 			);
 			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	// Deploy bot commands (clientId) to a Discord guild (guildId)
+	async deleteAll(clientId, guildId) {
+		try {
+			console.log(`Started deleting application (/) commands.`);
+			await rest.put(
+				guildId !== undefined
+					? Routes.applicationGuildCommands(clientId, guildId)
+					: Routes.applicationCommands(clientId),
+				{ body: [] },
+			);
+			console.log(`Successfully deleted all application (/) commands.`);
 		} catch (error) {
 			console.error(error);
 		}

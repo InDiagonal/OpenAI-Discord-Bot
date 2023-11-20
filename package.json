@@ -1,6 +1,6 @@
 {
   "name": "openai-bot",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Interact with OpenAI Models using OpenAI API",
   "main": "src/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
-    "openai": "^3.1.0",
+    "openai": "^4.19.0",
     "sqlite3": "^5.1.4"
   },
   "repository": {

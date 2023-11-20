@@ -21,6 +21,10 @@ module.exports = {
         const input = interaction.options.getString('prompt');
         // generate answer from prompt
         const output = await ask.generate_answer(input);
+        if (!output) {
+            await interaction.editReply("Error generating answer");
+            return;
+        }
         // send the reply with the generated output
         await interaction.editReply(output);
         console.log('Answer sent!');

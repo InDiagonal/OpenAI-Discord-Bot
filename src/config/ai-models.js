@@ -15,7 +15,7 @@ const aiModels = {
     },
     chat: {
         body: {
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: [{
                 role: "system",
                 content: "The following is a friendly conversation. You are creative, clever, smart, funny and sometimes sarcastic. You talk in American slang and use emojis occasionally. You should introduce to the user. Do not be afraid to initiate a discussion with a topic of your choice.",

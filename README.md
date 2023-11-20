@@ -1,4 +1,4 @@
-# OpenAI Bot (Beta v0.0.2)
+# OpenAI Bot (Beta v0.0.3)
 
 <span>&nbsp;&nbsp;</span><img src="https://camo.githubusercontent.com/d55d8a7f07a103454ebb77b653d9600ce27e011f78395d9713b432c8c011c76a/68747470733a2f2f646973636f72642e6a732e6f72672f7374617469632f6c6f676f2e737667" width="15%"/><span>&nbsp;&nbsp;&nbsp;</span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/OpenAI_Logo.svg/2560px-OpenAI_Logo.svg.png" width="15%"/>
 
@@ -18,7 +18,7 @@
 
 #### Description:
 
-OpenAI Bot allows users to access the capabilities of advanced artificial intelligence technologies right from a Discord server. With this bot, you can use the GPT-3 language model to generate human-like text. Whether you're looking to retrieve creative ideas, write compelling content, or simply have some fun, the GPT-3 model is up to the task.
+OpenAI Bot allows users to access the capabilities of advanced artificial intelligence technologies right from a Discord server. With this bot, you can use the GPT-4 language model to generate human-like text. Whether you're looking to retrieve creative ideas, write compelling content, or simply have some fun, the GPT-4 model is up to the task.
 
 In addition to text generation, OpenAI Bot also allows users to access the DALL-E image generation model. This model can create unique and original images based on text input, allowing you to create visually striking graphics and artwork with ease. Whether you're an artist looking to generate new ideas, a designer looking to create eye-catching graphics, or just someone who enjoys creating and experimenting, the DALL-E model is a great resource.
 

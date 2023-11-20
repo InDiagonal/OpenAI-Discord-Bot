@@ -97,10 +97,9 @@ module.exports = {
         // generate a reply from the user message
         const response = await chat.generate_reply(chat_text, interaction.content);
         if (!response) {
-            interaction.reply("Error generating reply");
+            await interaction.reply("Error generating reply");
             return;
         }
-
         const chat_updated = response[0];
         const reply = response[1];
         // update user chat in database

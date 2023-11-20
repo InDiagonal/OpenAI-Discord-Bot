@@ -3,3 +3,4 @@ node_modules/
 
 # dotenv environment variables
 .env
+.env-test

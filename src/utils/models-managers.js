@@ -1,18 +1,17 @@
 require('dotenv').config();
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
 const { aiModels } = require('../config/ai-models.js');
 
 
 // Openai configuration with apiKey
 const apiKey = process.env.OPENAI_API_KEY;
-const openai_config = new Configuration({ apiKey: apiKey });
+const openai = new OpenAI({ apiKey: apiKey });
 // Discord max message length
 const maxMessageLength = 2000;
 
 // The AskAI class extends the OpenAIApi class and is used to generate answers to user prompts
-class AskManager extends OpenAIApi {
+class AskManager {
     constructor() {
-        super(openai_config);
         // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'ask';
         this.body = aiModels[this.name].body;
@@ -29,11 +28,10 @@ class AskManager extends OpenAIApi {
         this.body.prompt = this.defaultPrompt + question;
 
         try {
-            // Call the createCompletion method of the OpenAIApi class with the modified body object
-            const response = await super.createCompletion(this.body);
+            const response = await openai.completions.create(this.body);
             console.log('Status:', response.status, response.statusText);
             // Extract the response text and trim leading and trailing whitespace
-            const answer = response.data.choices[0].text.trim();
+            const answer = response.choices[0].text.trim();
             if (!answer || answer.length > maxMessageLength) {
                 throw new Error;
             }
@@ -41,18 +39,16 @@ class AskManager extends OpenAIApi {
             return answer;
 
         } catch (err) {
-            const error = 'Error generating answer';
-            console.error(error);
-            return error;
+            console.error(err);
+            return;
         }
     }
 }
 
 
 // The ChatAI class extends the OpenAIApi class and is used to hold a conversation with a user
-class ChatManager extends OpenAIApi {
+class ChatManager {
     constructor() {
-        super(openai_config);
         // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'chat';
         this.body = aiModels[this.name].body;
@@ -71,12 +67,11 @@ class ChatManager extends OpenAIApi {
         this.body.messages = messages;
 
         try {
-            // Use the superclass's createCompletion method to generate a response
-            const response = await super.createChatCompletion(this.body);
+            const response = await openai.chat.completions.create(this.body);
             console.log('Status:', response.status, response.statusText);
 
             // Extract the response text and trim leading and trailing whitespace
-            const reply = response.data.choices[0].message;
+            const reply = response.choices[0].message;
             if (!reply.content || reply.content.length > maxMessageLength) {
                 throw new Error;
             }
@@ -85,15 +80,15 @@ class ChatManager extends OpenAIApi {
             return [messages, reply];
 
         } catch (err) {
-            return null;
+            console.error(err);
+            return;
         }
     }
 }
 
 // The ImageAI class extends the OpenAIApi class and is used to generate an image using DALL-E Model
-class ImageManager extends OpenAIApi {
+class ImageManager {
     constructor() {
-        super(openai_config);
         // Set the name, body and defaultPrompt properties based on the specified AI model
         this.name = 'image';
         this.body = aiModels[this.name].body;
@@ -107,11 +102,10 @@ class ImageManager extends OpenAIApi {
         this.body.prompt = prompt + this.defaultPrompt;
 
         try {
-            // Use the superclass's createImage method to generate an image
-            const response = await super.createImage(this.body);
+            const response = await openai.images.generate(this.body);
             console.log('Status:', response.status, response.statusText);
             // Extract the image URL frome response data
-            const url = response.data.data[0].url;
+            const url = response.data[0].url;
             if (!url) {
                 throw new Error;
             }
@@ -119,8 +113,7 @@ class ImageManager extends OpenAIApi {
             return url;
 
         } catch (err) {
-            const error = 'Error generating image';
-            console.error(error);
+            console.error(err);
             return;
         }
     }

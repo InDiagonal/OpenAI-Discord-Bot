@@ -23,9 +23,20 @@ client.once(Events.ClientReady, client => {
     console.log('CLIENT: Logged in as ->', client.user.tag );
 });
 
-// Initialize and deploy client commands to the guild
+// Loads command files
 client.commands = new CommandsManager();
-client.commands.deploy(clientId, guildId);
+
+// Deploys commands globally
+client.commands.deploy(clientId);
+
+// Deploys commands on a specific guild
+// client.commands.deploy(clientId, guildId);
+
+// Delete all guild commands
+// client.commands.deleteAll(clientId, guildId);
+
+// Delete all global commands
+// client.commands.deleteAll(clientId);
 
 // User messages event
 client.on(Events.MessageCreate, async interaction => {
